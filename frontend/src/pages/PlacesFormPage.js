@@ -18,7 +18,9 @@ export default function PlacesFormPage() {
     const [checkOut, setCheckOut] = useState("");
     const [maxGuests, setmaxGuests] = useState(1);
     const [reDirectToPlacesList , setreDirectToPlacesList] = useState(false);
-    const [price , setPrice] = useState(100);
+    const [economyPrice , setEconomyPrice] = useState(100);
+    const [bussinessPrice , setBussinessPrice] = useState(100);
+    const [premiumPrice , setPremiumPrice] = useState(100);
     const [redirect,setRedirect] = useState(false);
 
 
@@ -40,7 +42,9 @@ export default function PlacesFormPage() {
         setCheckIn(data.checkIn);
         setCheckOut(data.checkOut);
         setmaxGuests(data.maxGuests);
-        setPrice(data.price);
+        setEconomyPrice(data.economyPrice);
+        setBussinessPrice(data.bussinessPrice);
+        setPremiumPrice(data.premiumPrice)
       });
       
      },[id]);
@@ -67,7 +71,7 @@ export default function PlacesFormPage() {
         const placeData = 
           {title , address , photos: addedPhotos.split(','), 
           description , Perks , extraInfo ,
-          checkIn , checkOut , maxGuests , price , vibe};
+          checkIn , checkOut , maxGuests , economyPrice , bussinessPrice , premiumPrice , vibe};
 
           // console.log(placeData);
 
@@ -183,11 +187,27 @@ export default function PlacesFormPage() {
               />
             </div>
             <div>
-              <h3 className="mt-2 -mb-1">Price Per night</h3>
+              <h3 className="mt-2 -mb-1">Price Per night for Economy class</h3>
               <input
                 type="number"
-                value={price}
-                onChange={(ev) => setPrice(ev.target.value)}
+                value={economyPrice}
+                onChange={(ev) => setEconomyPrice(ev.target.value)}
+              />
+            </div>
+            <div>
+              <h3 className="mt-2 -mb-1">Price Per night for Bussiness class</h3>
+              <input
+                type="number"
+                value={bussinessPrice}
+                onChange={(ev) => setBussinessPrice(ev.target.value)}
+              />
+            </div>
+            <div>
+              <h3 className="mt-2 -mb-1">Price Per night for premium</h3>
+              <input
+                type="number"
+                value={premiumPrice}
+                onChange={(ev) => setPremiumPrice(ev.target.value)}
               />
             </div>
           </div>

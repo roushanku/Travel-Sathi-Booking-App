@@ -19,6 +19,7 @@ import { dirname } from "path";
 import { rejects } from "assert";
 import PlaceModel from "./Models/Place.js";
 import { title } from "process";
+import { v4 } from "uuid";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -205,6 +206,7 @@ app.get("/places/:id", async (req, res) => {
 
 app.put("/places", async (req, res) => {
   const { token } = req.cookies;
+  let hotelId = uuidv4();
   const {
     id,
     title,
@@ -216,7 +218,9 @@ app.put("/places", async (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
-    price,
+    economyPrice,
+    bussinessPrice,
+    premiumPrice,
   } = req.body;
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -232,7 +236,10 @@ app.put("/places", async (req, res) => {
         checkIn,
         checkOut,
         maxGuests,
-        price,
+        economyPrice,
+        bussinessPrice,
+        premiumPrice,
+        hotelId,
       });
       await placeDoc.save();
     }

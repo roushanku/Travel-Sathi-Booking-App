@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { v4 as uuidv4 } from 'uuid';
 
 const placeSchema = new mongoose.Schema({
     owner : {type:mongoose.Schema.Types.ObjectId , ref:'User'},
@@ -11,8 +12,14 @@ const placeSchema = new mongoose.Schema({
     checkIn : Number,
     checkOut : Number,
     maxGuests : Number,
-    price : Number,
+    economyPrice : Number,
+    bussinessPrice : Number,
+    premiumPrice : Number,
     vibe : String,
+    hotelId : {
+        type : String,
+        default: uuidv4,
+    },   
 });
 
 placeSchema.index({
