@@ -1,12 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../UserContext";
+import { useNavigate } from 'react-router-dom';
 const ITEMS_PER_PAGE = 3;
+
 const HotelCard = (props) => {
   const { filterHotel, setfilterHotel } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // State to track the currently selected product
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPageProducts, setCurrentPageProducts] = useState([]);
+  const navigate = useNavigate();  // Hook to navigate programmatically
 
   const handleOpenModal = (product) => {
     setSelectedProduct(product);
@@ -48,6 +51,7 @@ const HotelCard = (props) => {
             product ? (
               <div
                 key={index}
+                onClick={() => navigate(`/hotel/${product._id}`)}  // Navigate to the new route
                 className="max-w-sm mx-auto bg-white rounded-lg shadow-lg overflow-hidden my-4 m-4"
               >
                 {product.photos.length > 0 ? (

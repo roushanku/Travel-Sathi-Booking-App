@@ -15,6 +15,7 @@ import BookingsPage from './pages/BookingsPage.js';
 import BookingPage from './pages/BookingPage.js';
 import ProductCard from './pages/DisplayHotel.js';
 import TrendingPlace from './pages/TrendingPlace.js';
+import MoreOnHotel from './pages/MoreOnHotel.js';
 
 axios.defaults.withCredentials = true;
 
@@ -37,6 +38,7 @@ function App() {
         <Route path='/account/bookings' element={<BookingsPage/>}/>
         <Route path='/account/bookings/:id' element={<BookingPage/>}/>
         <Route path='/searchedProduct' element={<ProductCard/>}/>
+        <Route path='hotel/:id' element={<MoreOnHotel/>}/>
         </Route> 
         </Routes>
       </BrowserRouter>

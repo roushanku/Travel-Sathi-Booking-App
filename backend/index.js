@@ -20,6 +20,7 @@ import { rejects } from "assert";
 import PlaceModel from "./Models/Place.js";
 import { title } from "process";
 import { v4 } from "uuid";
+import axios from "axios";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -440,6 +441,17 @@ app.post("/search-history", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+app.post("/get-nearbycity", async(req , res) => {
+  const {city} = req.body;
+  try{
+    const nearbyCity = await Place.find({address : city})
+    res.json(nearbyCity)
+  }
+  catch(eror){
+    res.status(201).json({message : "error in finding nearbycity"})
+  }
+})
 
 app.listen(4000, () => {
   console.log("Server is running");
