@@ -9,6 +9,10 @@ const UserSchema = new Schema({
         unique : true
     },
     password : String,
+    wishList : [{
+        type : Schema.Types.ObjectId,
+        ref : 'Place'
+    }],
 })
 
 const UserModel = new mongoose.model('User' , UserSchema);

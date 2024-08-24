@@ -1,11 +1,31 @@
 import React, { useState } from "react";
 import PhotoGallery from "./PhotosGallery.js";
 import axios from "axios";
+import { UserContext } from "../UserContext.js";
+import { useContext } from "react";
 import HotelCard from "./HotelCard.js";
+import NeayByHotel from "./NeayByHotel.js";
 export default function HotelOverview(hotel) {
   // let photos = [hotel.photos[0], hotel.photos[0], hotel.photos[0]];
   const rating = 3.9; // Example rating, you can dynamically pass this as a prop or get it from `hotel`
   const [nearByCity, setNearByCity] = useState([]);
+  const { user, setUser } = useContext(UserContext);
+
+  const handleSaveToWishList = async (hotelId, userId) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/save-wishlist",
+        {
+          hotelId,
+          userId,
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log("error in saving to wishlist", error);
+    }
+  };
+
   const renderStars = () => {
     const totalStars = 5;
     const fullStars = Math.floor(rating);
@@ -76,7 +96,9 @@ export default function HotelOverview(hotel) {
               Directions
             </button>
             <button
-              onClick={() => console.log("Save clicked")}
+              onClick={() => {
+                handleSaveToWishList(hotel.hotel._id, user.id);
+              }}
               className=" mx-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               Save
@@ -100,6 +122,10 @@ export default function HotelOverview(hotel) {
       </div>
       <div>
         <PhotoGallery hotel={hotel} />
+      </div>
+
+      <div>
+        <NeayByHotel hotel={hotel} />
       </div>
     </div>
   );

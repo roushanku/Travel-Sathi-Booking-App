@@ -442,16 +442,53 @@ app.post("/search-history", async (req, res) => {
   }
 });
 
-app.post("/get-nearbycity", async(req , res) => {
-  const {city} = req.body;
-  try{
-    const nearbyCity = await Place.find({address : city})
-    res.json(nearbyCity)
+app.post("/get-nearbycity", async (req, res) => {
+  const { city, title } = req.body;
+  console.log(city);
+  try {
+    const nearbyCity = await Place.find({ address: city });
+    // console.log(nearbyCity);
+    res.status(200).json(nearbyCity);
+  } catch (eror) {
+    res.status(201).json({ message: "error in finding nearbycity" });
   }
-  catch(eror){
-    res.status(201).json({message : "error in finding nearbycity"})
+});
+
+app.post("/save-wishlist", async (req, res) => {
+  const { hotelId } = req.body;
+  const { userId } = req.body;
+  console.log(hotelId);
+  console.log(userId);
+  try {
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      res.json({
+        status: "error",
+        message: "User not found",
+      });
+      return;
+    }
+    const hotel = await Place.findById(hotelId);
+    if (!hotel) {
+      res.json({
+        status: "error",
+        message: "Hotel not found",
+      });
+      return;
+    }
+    user.wishList.push(hotel);
+    await user.save();
+    res.json({
+      status: "success",
+      message: "Hotel added to wishlist",
+    });
+  } catch (err) {
+    res.json({
+      status: "error",
+      message: "Error in adding hotel to wishlist",
+    });
   }
-})
+});
 
 app.listen(4000, () => {
   console.log("Server is running");
