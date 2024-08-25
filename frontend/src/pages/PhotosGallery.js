@@ -1,7 +1,7 @@
 import React from "react";
 
 const PhotoGallery = ({ hotel }) => {
-  console.log("THis is hotel photot");
+  // console.log("THis is hotel photot");
   console.log(hotel.hotel.photos);
   let photos = [
     {

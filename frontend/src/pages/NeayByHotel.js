@@ -17,7 +17,7 @@ export default function NeayByHotel({ hotel }) {
           { city: address  , title: title}
         );
         setNearByHotel(response.data);
-        console.log("this is nearby hotel", response.data);
+        // console.log("this is nearby hotel", response.data);
       } catch (error) {
         console.log("error in fetching nearbyCity", error);
       }

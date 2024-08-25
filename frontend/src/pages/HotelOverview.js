@@ -10,19 +10,38 @@ export default function HotelOverview(hotel) {
   const rating = 3.9; // Example rating, you can dynamically pass this as a prop or get it from `hotel`
   const [nearByCity, setNearByCity] = useState([]);
   const { user, setUser } = useContext(UserContext);
-
+  const [toast, setToast] = useState(null);
+  const Toast = ({ message, type }) => {
+    return (
+      <div
+        className={`fixed top-4 right-4 p-4 rounded-md ${
+          type === "success" ? "bg-green-500" : "bg-red-500"
+        } text-white shadow-lg`}
+      >
+        {message}
+      </div>
+    );
+  };
   const handleSaveToWishList = async (hotelId, userId) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4000/save-wishlist",
-        {
-          hotelId,
-          userId,
-        }
-      );
-      console.log(response.data);
+      console.log(userId);
+      const response = await axios.post("http://localhost:4000/save-wishlist", {
+        hotelId,
+        userId,
+      });
+
+      console.log("this is res", response.data.message);
+
+      setToast({ message: response.data.message, type: response.data.status });
+
+      // Clear toast after 3 seconds
+      setTimeout(() => setToast(null), 3000);
     } catch (error) {
       console.log("error in saving to wishlist", error);
+      setToast({ message: "Error in saving to wishlist", type: "error" });
+
+      // Clear toast after 3 seconds
+      setTimeout(() => setToast(null), 3000);
     }
   };
 
@@ -97,12 +116,13 @@ export default function HotelOverview(hotel) {
             </button>
             <button
               onClick={() => {
-                handleSaveToWishList(hotel.hotel._id, user.id);
+                handleSaveToWishList(hotel.hotel._id, user._id);
               }}
               className=" mx-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               Save
             </button>
+            {toast && <Toast message={toast.message} type={toast.type} />}
             <button
               onClick={() => console.log("Share clicked")}
               className=" mx-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300"

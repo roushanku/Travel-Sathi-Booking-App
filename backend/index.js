@@ -54,38 +54,57 @@ mongoose
   });
 
 app.post("/register", async (req, res) => {
-  // console.log(req.body);
-  let Name = req.body.name;
-  let Email = req.body.email;
-  let Pass = req.body.password;
-  console.log("Register Invoked");
-  const newUser = new UserModel({
-    name: Name,
-    email: Email,
-    password: bcrypt.hashSync(Pass, bcryptSalt),
-  });
-  const savedUser = await newUser.save();
-  console.log(savedUser);
-  res.json(savedUser);
+  let { name, email, password, roleType } = req.body;
+
+  try {
+    const existingUser = await UserModel.findOne({ email: email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already registered..." });
+    }
+
+    const newUser = new UserModel({
+      name,
+      email,
+      password: bcrypt.hashSync(password, bcryptSalt),
+      roleType,
+    });
+
+    const savedUser = await newUser.save();
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: savedUser });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error registering user", error: error.message });
+  }
 });
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const userDoc = await UserModel.findOne({ email });
-  if (userDoc) {
-    const passok = bcrypt.compareSync(password, userDoc.password);
-    if (passok) {
-      jwt.sign(
-        { email: userDoc.email, id: userDoc._id },
-        jwtSecret,
-        {},
-        (err, token) => {
-          if (err) throw err;
-          res.cookie("token", token).json(userDoc);
-        }
-      );
-    } else res.status(422).send("pass not ok");
-  } else res.status(401).json("not found");
+  try {
+    const userDoc = await UserModel.findOne({ email });
+    if (userDoc) {
+      const passok = bcrypt.compareSync(password, userDoc.password);
+      if (passok) {
+        jwt.sign(
+          { email: userDoc.email, id: userDoc._id },
+          jwtSecret,
+          {},
+          (err, token) => {
+            if (err) throw err;
+            res.cookie("token", token).json(userDoc);
+          }
+        );
+      } else {
+        res.status(422).json({ message: "Incorrect password" });
+      }
+    } else {
+      res.status(401).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 });
 
 app.get("/profile", (req, res) => {
@@ -457,8 +476,7 @@ app.post("/get-nearbycity", async (req, res) => {
 app.post("/save-wishlist", async (req, res) => {
   const { hotelId } = req.body;
   const { userId } = req.body;
-  console.log(hotelId);
-  console.log(userId);
+  console.log("debug", userId);
   try {
     const user = await UserModel.findById(userId);
     if (!user) {
