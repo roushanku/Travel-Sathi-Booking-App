@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import { data } from "autoprefixer";
 
 export const UserContext = createContext({});
 
@@ -9,6 +8,15 @@ export function UserContextProvider({ children }) {
   const [ready, setReady] = useState(false);
   const [searchProduct, setSearchProduct] = useState([]);
   const [filterHotel, setfilterHotel] = useState([]);
+  const [formData, setFormData] = useState({
+    checkInDate: "",
+    checkOutDate: "",
+    checkInTime: "",
+    checkOutTime: "",
+    guestName: "",
+    numberOfGuests: 1,
+    roomType: "standard",
+  });
 
   useEffect(() => {
     if (!user) {
@@ -29,6 +37,8 @@ export function UserContextProvider({ children }) {
         setSearchProduct,
         filterHotel,
         setfilterHotel,
+        formData,
+        setFormData,
       }}
     >
       {children}

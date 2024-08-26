@@ -21,6 +21,7 @@ import PlaceModel from "./Models/Place.js";
 import { title } from "process";
 import { v4 } from "uuid";
 import axios from "axios";
+import BookingsModel from "./Models/Booking.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -212,7 +213,6 @@ app.get("/user-places", (req, res) => {
   });
 });
 
-
 app.get("/places/:id", async (req, res) => {
   // res.json(req.params);
   const { id } = req.params;
@@ -266,28 +266,31 @@ app.get("/places", async (req, res) => {
   res.json(await Place.find());
 });
 
-app.post("/bookings", async (req, res) => {
+app.post("/booking", async (req, res) => {
   const { token } = req.cookies;
   const userData = await getUserDataFromToken(token);
-  const { place, checkIn, checkOut, numgerOfGuest, name, phone, price } =
-    req.body;
-  // console.log(req.body);
-  Booking.create({
-    place,
-    checkIn,
-    checkOut,
-    numgerOfGuest,
-    name,
-    phone,
-    price,
-    user: userData.id,
-  })
-    .then((doc) => {
-      res.json(doc);
-    })
-    .catch((err) => {
-      throw err;
+  const { hotelId, userId, formData } = req.body;
+  const { checkIn, checkOut, numgerOfGuest, roomType } = formData;
+  try {
+    const booked = await BookingsModel.create({
+      userId,
+      hotelId,
+      checkIn,
+      checkOut,
+      numgerOfGuest,
+      roomType,
     });
+    await booked.save();
+    res.json({
+      status: true,
+      message: "Booking done!",
+    })
+  } catch (err) {
+    res.json({
+      status: false,
+      message: "Error in booking",
+    })
+  }
 });
 
 function getUserDataFromToken(token) {
@@ -470,7 +473,7 @@ app.post("/get-nearbycity", async (req, res) => {
 
 app.post("/save-wishlist", async (req, res) => {
   const { hotelId, userId } = req.body;
-  console.log("debug", userId);
+  // console.log("debug", userId);
 
   try {
     const user = await UserModel.findById(userId);
@@ -519,7 +522,7 @@ app.post("/save-wishlist", async (req, res) => {
 
 app.post("/wishlist", async (req, res) => {
   const { userId } = req.body;
-  console.log("debug", userId);
+  // console.log("debug", userId);
   try {
     const user = await UserModel.findById(userId);
     if (!user) {

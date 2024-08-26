@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { UserContext } from "../UserContext.js";
+import { useContext } from "react";
 export default function HotelBookingForm() {
   const navigate = useNavigate(); // Hook to navigate programmatically
   const { id } = useParams();
   const [hotelPrice, setHotelPrice] = useState(0);  
   const [hotel,setHotel] = useState([]);
-
+  const { formData, setFormData } = useContext(UserContext);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,15 +22,15 @@ export default function HotelBookingForm() {
     fetchData();
   }, []);
 
-  const [formData, setFormData] = useState({
-    checkInDate: "",
-    checkOutDate: "",
-    checkInTime: "",
-    checkOutTime: "",
-    guestName: "",
-    numberOfGuests: 1,
-    roomType: "standard",
-  });
+  // const [formData, setFormData] = useState({
+  //   checkInDate: "",
+  //   checkOutDate: "",
+  //   checkInTime: "",
+  //   checkOutTime: "",
+  //   guestName: "",
+  //   numberOfGuests: 1,
+  //   roomType: "standard",
+  // });
 
   const [errors, setErrors] = useState({
     checkInTime: "",

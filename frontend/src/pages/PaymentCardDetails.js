@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const PaymentCardDetails = ({ onCancel }) => {
+const PaymentCardDetails = ({ onCancel, onSubmit }) => {
   const amount = useParams().cost;
   const [cardDetails, setCardDetails] = useState({
     name: '',
@@ -87,7 +87,7 @@ const PaymentCardDetails = ({ onCancel }) => {
           <button type="button" onClick={handleCancel} className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
             Cancel
           </button>
-          <button type="submit" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
+          <button type="submit" onClick={onSubmit} className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
             Submit
           </button>
         </div>
