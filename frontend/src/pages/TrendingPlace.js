@@ -59,7 +59,7 @@ const TrendingPlace = () => {
   useEffect(() => {
     const specificPlace = async () => {
       try {
-        console.log("vibe", selectedVibe);
+        // console.log("vibe", selectedVibe);
         const response = await axios.get(
           `http://localhost:4000/vibeplace/?search=${selectedVibe}`
         );

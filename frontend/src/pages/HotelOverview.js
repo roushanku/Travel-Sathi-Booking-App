@@ -3,14 +3,17 @@ import PhotoGallery from "./PhotosGallery.js";
 import axios from "axios";
 import { UserContext } from "../UserContext.js";
 import { useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import HotelCard from "./HotelCard.js";
 import NeayByHotel from "./NeayByHotel.js";
+
 export default function HotelOverview(hotel) {
   // let photos = [hotel.photos[0], hotel.photos[0], hotel.photos[0]];
   const rating = 3.9; // Example rating, you can dynamically pass this as a prop or get it from `hotel`
   const [nearByCity, setNearByCity] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const [toast, setToast] = useState(null);
+  const navigate = useNavigate();  // Hook to navigate programmatically
   const Toast = ({ message, type }) => {
     return (
       <div
@@ -24,13 +27,13 @@ export default function HotelOverview(hotel) {
   };
   const handleSaveToWishList = async (hotelId, userId) => {
     try {
-      console.log(userId);
+      // console.log(userId);
       const response = await axios.post("http://localhost:4000/save-wishlist", {
         hotelId,
         userId,
       });
 
-      console.log("this is res", response.data.message);
+      // console.log("this is res", response.data.message);
 
       setToast({ message: response.data.message, type: response.data.status });
 
@@ -116,7 +119,7 @@ export default function HotelOverview(hotel) {
             </button>
             <button
               onClick={() => {
-                handleSaveToWishList(hotel.hotel._id, user._id);
+                handleSaveToWishList(hotel.hotel._id, user.id);
               }}
               className=" mx-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
@@ -132,7 +135,7 @@ export default function HotelOverview(hotel) {
           </div>
           <div>
             <button
-              onClick={() => console.log("Book a room clicked")}
+              onClick={() => navigate(`/hotel/booking/${hotel.hotel._id}`)}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               Book a room

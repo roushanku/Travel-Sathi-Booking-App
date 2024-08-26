@@ -28,7 +28,7 @@ const SearchBar = () => {
             `http://localhost:4000/search-history-user`,
             { email: user.email }
           );
-          console.log("search history from DB", response.data);
+          // console.log("search history from DB", response.data);
           setHistory(response.data || []);
         } catch (error) {
           console.error("Error fetching search history:", error);

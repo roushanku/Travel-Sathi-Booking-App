@@ -212,11 +212,6 @@ app.get("/user-places", (req, res) => {
   });
 });
 
-app.get("/places/:id", async (req, res) => {
-  // res.json(req.params);
-  const { id } = req.params;
-  res.json(await Place.findById(id));
-});
 
 app.get("/places/:id", async (req, res) => {
   // res.json(req.params);
@@ -314,7 +309,7 @@ app.get("/search", async (req, res) => {
   try {
     const query = req.query.search;
 
-    console.log(req.query);
+    // console.log(req.query);
 
     const searchCriteria = [];
 
@@ -332,7 +327,7 @@ app.get("/search", async (req, res) => {
       modified = await Place.find();
     }
 
-    console.log(modified);
+    // console.log(modified);
 
     res.status(200).json(modified);
   } catch (err) {
@@ -406,7 +401,7 @@ app.post("/vibes", async (req, res) => {
 app.get("/vibeplace", async (req, res) => {
   try {
     const query = req.query.search;
-    console.log(query);
+    // console.log(query);
     let place;
     if (query === "All") {
       const hotel = await PlaceModel.find();
@@ -463,7 +458,7 @@ app.post("/search-history", async (req, res) => {
 
 app.post("/get-nearbycity", async (req, res) => {
   const { city, title } = req.body;
-  console.log(city);
+  // console.log(city);
   try {
     const nearbyCity = await Place.find({ address: city });
     // console.log(nearbyCity);
@@ -474,7 +469,55 @@ app.post("/get-nearbycity", async (req, res) => {
 });
 
 app.post("/save-wishlist", async (req, res) => {
-  const { hotelId } = req.body;
+  const { hotelId, userId } = req.body;
+  console.log("debug", userId);
+
+  try {
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
+    const hotel = await Place.findById(hotelId);
+    if (!hotel) {
+      return res.json({
+        status: "error",
+        message: "Hotel not found",
+      });
+    }
+
+    // Check if the hotel is already in the wishlist
+    const isAlreadyInWishlist = user.wishList.some(
+      (wish) => wish.toString() === hotelId
+    );
+
+    if (isAlreadyInWishlist) {
+      return res.json({
+        status: "success",
+        message: "Hotel is already in your wishlist",
+      });
+    }
+
+    // Add the hotel to the wishlist
+    user.wishList.push(hotel);
+    await user.save();
+
+    res.json({
+      status: "success",
+      message: "Hotel added to wishlist",
+    });
+  } catch (err) {
+    res.json({
+      status: "error",
+      message: "Error in adding hotel to wishlist",
+    });
+  }
+});
+
+app.post("/wishlist", async (req, res) => {
   const { userId } = req.body;
   console.log("debug", userId);
   try {
@@ -486,24 +529,11 @@ app.post("/save-wishlist", async (req, res) => {
       });
       return;
     }
-    const hotel = await Place.findById(hotelId);
-    if (!hotel) {
-      res.json({
-        status: "error",
-        message: "Hotel not found",
-      });
-      return;
-    }
-    user.wishList.push(hotel);
-    await user.save();
-    res.json({
-      status: "success",
-      message: "Hotel added to wishlist",
-    });
+    res.json(user.wishList);
   } catch (err) {
     res.json({
       status: "error",
-      message: "Error in adding hotel to wishlist",
+      message: "Error in getting wishlist",
     });
   }
 });

@@ -16,6 +16,9 @@ import BookingPage from './pages/BookingPage.js';
 import ProductCard from './pages/DisplayHotel.js';
 import TrendingPlace from './pages/TrendingPlace.js';
 import MoreOnHotel from './pages/MoreOnHotel.js';
+import WishList from './pages/WishList.js';
+import HotelBookingForm from './pages/HotelBookingForm.js';
+import CardDetailsConsoleParent from './pages/CardDetailsConsoleParent.js';
 
 axios.defaults.withCredentials = true;
 
@@ -39,6 +42,9 @@ function App() {
         <Route path='/account/bookings/:id' element={<BookingPage/>}/>
         <Route path='/searchedProduct' element={<ProductCard/>}/>
         <Route path='hotel/:id' element={<MoreOnHotel/>}/>
+        <Route path='/account/wishlist' element={<WishList/>}/> 
+        <Route path='/hotel/booking/:id' element={<HotelBookingForm/>}/>
+        <Route path='/hotel/payment/:hotelID/:cost' element={<CardDetailsConsoleParent/>}/>
         </Route> 
         </Routes>
       </BrowserRouter>

@@ -14,7 +14,7 @@ export default function Placespage() {
 
   useEffect(() => {
     axios.get("http://localhost:4000/user-places").then(({ data }) => {
-      console.log("This is the data ", data);
+      // console.log("This is the data ", data);
       setPlaces(data);
     });
 
