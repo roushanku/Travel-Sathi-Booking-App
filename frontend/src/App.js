@@ -8,17 +8,14 @@ import Registerpage from './pages/Registerpage.js';
 import axios from 'axios';
 import { UserContextProvider } from './UserContext';
 import ProfilePage from './pages/ProfilePage.js';
-import Placespage from './pages/PlacesPage.js';
 import PlacesFormPage from './pages/PlacesFormPage.js';
-import PlacePage from './pages/PlacePage.js';
-import BookingsPage from './pages/BookingsPage.js';
-import BookingPage from './pages/BookingPage.js';
 import ProductCard from './pages/DisplayHotel.js';
 import TrendingPlace from './pages/TrendingPlace.js';
 import MoreOnHotel from './pages/MoreOnHotel.js';
 import WishList from './pages/WishList.js';
 import HotelBookingForm from './pages/HotelBookingForm.js';
 import CardDetailsConsoleParent from './pages/CardDetailsConsoleParent.js';
+import MyBookings from './pages/MyBookings.js';
 
 axios.defaults.withCredentials = true;
 
@@ -34,17 +31,14 @@ function App() {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/register' element={<Registerpage/>}/>
         <Route path='/account' element={<ProfilePage/>}/>
-        <Route path='/account/places' element={<Placespage/>}/>
         <Route path='/account/places/new' element={<PlacesFormPage/>}/>
         <Route path='/account/places/:id' element={<PlacesFormPage/>}/>
-        <Route path='/place/:id' element={<PlacePage/>}/> 
-        <Route path='/account/bookings' element={<BookingsPage/>}/>
-        <Route path='/account/bookings/:id' element={<BookingPage/>}/>
         <Route path='/searchedProduct' element={<ProductCard/>}/>
         <Route path='hotel/:id' element={<MoreOnHotel/>}/>
         <Route path='/account/wishlist' element={<WishList/>}/> 
         <Route path='/hotel/booking/:id' element={<HotelBookingForm/>}/>
-        <Route path='/hotel/payment/:hotelID/:cost' element={<CardDetailsConsoleParent/>}/>
+        <Route path='/account/bookings' element={<MyBookings/>}/>
+        <Route path='/hotel/payment/:hotelId/:totalPrice' element={<CardDetailsConsoleParent/>}/>
         </Route> 
         </Routes>
       </BrowserRouter>

@@ -12,7 +12,9 @@ const CardDetailsConsoleParent = () => {
   const [showCardDetails, setShowCardDetails] = useState(false);
   const { formData, setFormData } = useContext(UserContext);
   const { user, setUser } = useContext(UserContext);
-  const { hotelID } = useParams();
+  const { hotelId } = useParams();
+  const { totalPrice } = useParams();
+  console.log("Total Price" ,totalPrice);
   const handleShowCardDetails = () =>{
     setShowCardDetails(true);
   }
@@ -21,12 +23,15 @@ const CardDetailsConsoleParent = () => {
     console.log("Payment Method Submitted");
     try {
       console.log(formData);
-      const userId = user.id;
+      const userId = user._id;
+      console.log("User ID", userId);
+      console.log("Hotel ID", hotelId);
 
       const response = await axios.post("http://localhost:4000/booking", {
-        hotelID,
+        hotelId,
         userId,
         formData,
+        totalPrice,
       });
       console.log(response.data);
     } catch (error) {

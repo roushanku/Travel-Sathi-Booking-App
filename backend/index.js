@@ -11,7 +11,7 @@ import imageDownloader from "image-downloader";
 import path, { resolve } from "path";
 import downloadImage from "./controller/image_controller.js";
 import multer from "multer";
-import fs from "fs";
+import fs, { stat } from "fs";
 import Booking from "./Models/Booking.js";
 import SearchHistory from "./Models/History.js";
 import { fileURLToPath } from "url";
@@ -269,27 +269,49 @@ app.get("/places", async (req, res) => {
 app.post("/booking", async (req, res) => {
   const { token } = req.cookies;
   const userData = await getUserDataFromToken(token);
-  const { hotelId, userId, formData } = req.body;
-  const { checkIn, checkOut, numgerOfGuest, roomType } = formData;
+  const { hotelId, userId, formData, totalPrice } = req.body;
+  const { checkInDate, checkOutDate, numberOfGuests, roomType } = formData;
+  console.log("booking called..", hotelId, userId, formData, totalPrice);
   try {
     const booked = await BookingsModel.create({
       userId,
       hotelId,
-      checkIn,
-      checkOut,
-      numgerOfGuest,
+      checkInDate,
+      checkOutDate,
+      numberOfGuests,
       roomType,
+      totalPrice,
     });
+    console.log("Reached");
     await booked.save();
     res.json({
       status: true,
       message: "Booking done!",
-    })
+    });
   } catch (err) {
     res.json({
       status: false,
-      message: "Error in booking",
-    })
+      message: err,
+    });
+  }
+});
+
+app.post("/getBookings", async (req, res) => {
+  const {userId} = req.body;
+  console.log("this is user ID", userId );
+  console.log(userId);
+  try {
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    const bookings = await BookingsModel.find({ userId: userId });
+    if (!bookings) {
+      return res.status(400).json({ message: "No bookings found" });
+    }
+    console.log(bookings);
+    res.status(200).json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
