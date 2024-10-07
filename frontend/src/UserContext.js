@@ -20,7 +20,7 @@ export function UserContextProvider({ children }) {
 
   useEffect(() => {
     if (!user) {
-      axios.get("http://localhost:4000/profile").then(({ data }) => {
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/profile`).then(({ data }) => {
         setUser(data);
         setReady(true);
       });

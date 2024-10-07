@@ -29,7 +29,7 @@ export default function HotelOverview(hotel) {
   const handleSaveToWishList = async (hotelId, userId) => {
     try {
       // console.log(userId);
-      const response = await axios.post("http://localhost:4000/save-wishlist", {
+      const response = await axios.post("${process.env.REACT_APP_BACKEND_URL}/save-wishlist", {
         hotelId,
         userId,
       });
@@ -97,7 +97,7 @@ export default function HotelOverview(hotel) {
     const address = hotel.address;
     try {
       const nearbyCity = await axios.post(
-        `http://localhost:4000/get-nearbycity`,
+        `${process.env.REACT_APP_BACKEND_URL}/get-nearbycity`,
         address
       );
       setNearByCity(nearByCity);

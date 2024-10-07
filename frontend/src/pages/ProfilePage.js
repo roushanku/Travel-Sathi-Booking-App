@@ -16,7 +16,7 @@ export default function ProfilePage() {
     }
 
     async function logout() {
-        await axios.post('http://localhost:4000/logout');
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/logout`);
         setUser(null);
         setRedirect('/');
     } 

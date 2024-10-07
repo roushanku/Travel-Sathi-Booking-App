@@ -27,7 +27,7 @@ const CardDetailsConsoleParent = () => {
       console.log("User ID", userId);
       console.log("Hotel ID", hotelId);
 
-      const response = await axios.post("http://localhost:4000/booking", {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/booking`, {
         hotelId,
         userId,
         formData,

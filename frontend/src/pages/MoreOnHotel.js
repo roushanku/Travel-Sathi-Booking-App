@@ -10,7 +10,7 @@ export default function MoreOnHotel() {
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/places/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/places/${id}`);
         // console.log("This is the data:", response.data);
         // console.log(hotel.photos[0]);
         setHotel(response.data);

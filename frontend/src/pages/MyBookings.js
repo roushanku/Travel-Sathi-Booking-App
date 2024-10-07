@@ -14,7 +14,7 @@ export default function BookingPage() {
     const fetchBooking = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:4000/getBookings",
+          `${process.env.REACT_APP_BACKEND_URL}/getBookings`,
           {userId} 
         );
         console.log("this is booking pagae", response.data);

@@ -43,7 +43,7 @@ const TrendingPlace = () => {
   useEffect(() => {
     const fetchVibes = async () => {
       try {
-        const response = await axios.post(`http://localhost:4000/vibes`);
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/vibes`);
 
         const data = await response.data;
         // console.log(data);
@@ -61,7 +61,7 @@ const TrendingPlace = () => {
       try {
         // console.log("vibe", selectedVibe);
         const response = await axios.get(
-          `http://localhost:4000/vibeplace/?search=${selectedVibe}`
+          `${process.env.REACT_APP_BACKEND_URL}/vibeplace/?search=${selectedVibe}`
         );
 
         const data = response.data;

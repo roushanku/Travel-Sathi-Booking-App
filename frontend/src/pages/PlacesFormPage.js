@@ -31,7 +31,7 @@ export default function PlacesFormPage() {
         return;
       }
 
-      axios.get("http://localhost:4000/places/"+id).then(response => {
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/places/`+id).then(response => {
         const {data} = response;
         setTitle(data.title);
         setAddress(data.address)
@@ -77,7 +77,7 @@ export default function PlacesFormPage() {
 
         if(id) {
           //update
-          const res = await axios.put('http://localhost:4000/places' , {
+          const res = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/places` , {
             id , ...placeData
           });
           // console.log(res.data);
@@ -88,7 +88,7 @@ export default function PlacesFormPage() {
         else{
           //add new
           console.log(placeData);
-          const res = await axios.post('http://localhost:4000/places' , placeData);
+          const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/places` , placeData);
           // console.log(res.data);
           setreDirectToPlacesList(true); 
           setRedirect(true);

@@ -25,7 +25,7 @@ const SearchBar = () => {
       const fetchHistory = async () => {
         try {
           const response = await axios.post(
-            `http://localhost:4000/search-history-user`,
+            `${process.env.REACT_APP_BACKEND_URL}/search-history-user`,
             { email: user.email }
           );
           // console.log("search history from DB", response.data);
@@ -53,7 +53,7 @@ const SearchBar = () => {
   const fetchSuggestions = async (query) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/autosuggestion?search=${query}`
+        `${process.env.REACT_APP_BACKEND_URL}/autosuggestion?search=${query}`
       );
       //   console.log(response);
       if (response) {
@@ -96,7 +96,7 @@ const SearchBar = () => {
     try {
       //   console.log("search text", searchText);
       const response = await axios.get(
-        `http://localhost:4000/search?search=${searchText}`
+        `${process.env.REACT_APP_BACKEND_URL}/search?search=${searchText}`
       );
       setSearchProduct(response.data);
 
@@ -113,7 +113,7 @@ const SearchBar = () => {
       const fetchHistory = async () => {
         try {
           const response = await axios.post(
-            `http://localhost:4000/search-history`,
+            `${process.env.REACT_APP_BACKEND_URL}/search-history`,
             { email: user.email, query: searchText }
           );
           //   setHistory(response.data || []);

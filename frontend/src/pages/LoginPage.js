@@ -31,7 +31,7 @@ export default function LoginPage() {
         password: password,
       };
 
-      const res = await axios.post("http://localhost:4000/login", UserInfo);
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, UserInfo);
       //   console.log(res);
       setUser(res.data);
       //   console.log(user);

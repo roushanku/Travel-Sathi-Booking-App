@@ -22,7 +22,7 @@ export default function Registerpage() {
   async function registerUser(event) {
     event.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4000/register", {
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, {
         name,
         email,
         password,

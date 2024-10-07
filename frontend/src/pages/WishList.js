@@ -10,7 +10,7 @@ export default function WishList() {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const response = await axios.post("http://localhost:4000/wishlist", {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/wishlist`, {
           userId: user.id,
         });
         // console.log(response.data);

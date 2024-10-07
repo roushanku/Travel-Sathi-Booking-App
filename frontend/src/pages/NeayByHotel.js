@@ -13,7 +13,7 @@ export default function NeayByHotel({ hotel }) {
 
       try {
         const response = await axios.post(
-          `http://localhost:4000/get-nearbycity`,
+          `${process.env.REACT_APP_BACKEND_URL}/get-nearbycity`,
           { city: address  , title: title}
         );
         setNearByHotel(response.data);

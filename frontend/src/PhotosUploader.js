@@ -8,7 +8,7 @@ export default function PhotosUploader() {
     async function addPhotoByLink(ev) {
         ev.preventDefault();
         const { data: filename } = await axios.post(
-          "http://localhost:4000/upload-by-link",
+          `${process.env.REACT_APP_BACKEND_URL}/upload-by-link`,
           { link: photoLink }
         );
         // console.log(res);
@@ -16,7 +16,7 @@ export default function PhotosUploader() {
           return [...prev, filename];
         });
         setPhotoLink("");
-        // const {data : filename} = await axios.post("http://localhost:4000/upload-by-link" , {link : photoLink});
+        // const {data : filename} = await axios.post("${process.env.REACT_APP_BACKEND_URL}/upload-by-link" , {link : photoLink});
         // setAddedPhotos(prev => {
         //   return [...prev , filename];
         // });
@@ -30,7 +30,7 @@ export default function PhotosUploader() {
           data.set('photos' , files[i]);
         }
         
-        axios.post('http://localhost:4000/upload' , data , {
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/upload` , data , {
           headers : {'Content-type':'multipart/form-data'}
         }).then(response => {
           const {data:filenames} = response;
@@ -61,13 +61,13 @@ export default function PhotosUploader() {
             {/* {addedPhotos.length > 0 &&
               addedPhotos.map((link, index) => (
                 <div className="h-32 flex" key={link}>
-                  <img key={index} src={'http://localhost:4000/uploads/' + link} alt="" />
+                  <img key={index} src={'${process.env.REACT_APP_BACKEND_URL}/uploads/' + link} alt="" />
                 </div>
               ))} */}
 
               {addedPhotos.length > 0 && addedPhotos.map(link => (
                 <div>
-                  <img src = {'https://localhost:4000/uploads' + link}></img>
+                  <img src = {'${process.env.REACT_APP_BACKEND_URL}/uploads' + link}></img>
                 </div>
               ))}
   
