@@ -33,10 +33,11 @@ const MAX_QUERIES = 3;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-app.get("/", (req, res) => { res.send("Express on Vercel"); });
+app.get("/", (req, res) => {
+  res.send("Express on Vercel");
+});
 // connecting to DB
 // dAhGXLPdNsUQBQuE
 mongoose
@@ -121,48 +122,6 @@ app.get("/profile", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
-});
-
-app.post("/upload-by-link", async (req, res) => {
-  const newName = Date.now() + ".jpg";
-  const { link } = req.body;
-  //   console.log("imagedownloader");
-
-  const url = link;
-  const imagePath = path.resolve(__dirname, "uploads", newName); // path where the image will be saved
-
-  downloadImage(url, imagePath)
-    .then(() => console.log("Image downloaded successfully"))
-    .catch((err) => console.error(err));
-  console.log(newName);
-  res.json(newName);
-  // const {link} = req.body;
-  // const newName = 'photo'+ Date.now() + '.jpg';
-  // console.log(newName);
-  // await imageDownloader.image({
-  //   url : link,
-  //   dest : __dirname + '/uploads/' + newName,
-  // });
-
-  // console.log("image downloaded...");
-  // res.json(newName);
-});
-
-const photosMiddleware = multer({ dest: "uploads/" });
-
-app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
-  // console.log(req.files);
-  const uploadedFiles = [];
-  for (let i = 0; i < req.files.length; i++) {
-    const { path, originalname } = req.files[i];
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    const newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-    uploadedFiles.push(newPath);
-    uploadedFiles.push(newPath.replace("uploads/", ""));
-  }
-  res.json(uploadedFiles);
 });
 
 app.post("/places", (req, res) => {
@@ -294,8 +253,8 @@ app.post("/booking", async (req, res) => {
 });
 
 app.post("/getBookings", async (req, res) => {
-  const {userId} = req.body;
-  console.log("this is user ID", userId );
+  const { userId } = req.body;
+  console.log("this is user ID", userId);
   console.log(userId);
   try {
     if (!userId) {
