@@ -3,7 +3,7 @@ import PhotoGallery from "./PhotosGallery.js";
 import axios from "axios";
 import { UserContext } from "../UserContext.js";
 import { useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import HotelCard from "./HotelCard.js";
 import NeayByHotel from "./NeayByHotel.js";
 
@@ -13,7 +13,8 @@ export default function HotelOverview(hotel) {
   const [nearByCity, setNearByCity] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const [toast, setToast] = useState(null);
-  const navigate = useNavigate();  // Hook to navigate programmatically
+  const navigate = useNavigate(); // Hook to navigate programmatically
+  const [errorMessage, setErrorMessage] = useState("");
   const Toast = ({ message, type }) => {
     return (
       <div
@@ -45,6 +46,18 @@ export default function HotelOverview(hotel) {
 
       // Clear toast after 3 seconds
       setTimeout(() => setToast(null), 3000);
+    }
+  };
+
+  const handleSaveClick = () => {
+    if (!user) {
+      setErrorMessage("Please log in first to save the product.");
+      setTimeout(() => {
+        navigate("/login"); // Navigate to the login page after setting the error message
+      }, 1000);
+    } else {
+      setErrorMessage(""); // Clear any previous error message
+      handleSaveToWishList(hotel.hotel._id, user.id);
     }
   };
 
@@ -118,13 +131,15 @@ export default function HotelOverview(hotel) {
               Directions
             </button>
             <button
-              onClick={() => {
-                handleSaveToWishList(hotel.hotel._id, user.id);
-              }}
-              className=" mx-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300"
+              onClick={handleSaveClick}
+              className="mx-2 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               Save
             </button>
+            {errorMessage && (
+              <p className="text-red-500 mt-2">{errorMessage}</p>
+            )}
+
             {toast && <Toast message={toast.message} type={toast.type} />}
             <button
               onClick={() => console.log("Share clicked")}
