@@ -36,10 +36,7 @@ app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-app.get("/test", (req, res) => {
-  res.send("This is test");
-});
-
+app.get("/", (req, res) => { res.send("Express on Vercel"); });
 // connecting to DB
 // dAhGXLPdNsUQBQuE
 mongoose
